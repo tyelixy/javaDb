@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+
 @RestController
 @ResponseBody
 @RequestMapping("/api")
@@ -36,4 +39,14 @@ public class UploadController {
         if (!"xls".equals(fileSuffix) && !"xlsx".equals(fileSuffix)) {
             throw new BusinessException("文件格式不正确,请检查后重新上传!");
         }
+        try {
+            //new File("上传文件的存储地址")
+            String filePath="javaDb\\upload\\"+file.getOriginalFilename();
+            System.out.println(filePath);
+            file.transferTo(new File(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ok";
+    }
 }
